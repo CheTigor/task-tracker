@@ -1,7 +1,9 @@
 package tasks;
 
+import java.util.Objects;
+
 public class Subtask extends Task {
-    int epicId;
+    private int epicId;
 
     public Subtask(String name, String description, String status, int epicId) {
         super(name, description, status);
@@ -9,15 +11,39 @@ public class Subtask extends Task {
     }
 
     public int getEpicId() {
-        return this.epicId;
+        return epicId;
     }
 
     public void setEpicId(int epicId) {
         this.epicId = epicId;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subtask subtask = (Subtask) o;
+        return Objects.equals(getName(), subtask.getName())
+                && Objects.equals(getDescription(), subtask.getDescription())
+                && Objects.equals(getId(), subtask.getId())
+                && Objects.equals(getStatus(), subtask.getStatus())
+                && Objects.equals(epicId, subtask.epicId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getDescription(), getId(), getStatus(), epicId);
+    }
+
+    @Override
     public String toString() {
-        String var10000 = this.getName();
-        return "Tasks.Task{name='" + var10000 + "', description='" + this.getDescription().length() + "', id='" + this.getId() + "', status='" + this.getStatus() + "', epicId='" + this.epicId + "}";
+        return "Subtask{" + "\n" +
+                "name='" + getName() + "',\n" +
+                "description='" + getDescription().length() + "',\n" +
+                "id=" + getId() + "',\n" +
+                "status='" + getStatus() + "',\n" +
+                "epicId=" + epicId + "'\n" +
+                '}';
     }
 }

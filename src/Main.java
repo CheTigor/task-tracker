@@ -14,7 +14,7 @@ public class Main {
         manager.createTask(task1);
         manager.createTask(task2);
         manager.createTask(task3);
-        Epic epic1 = new Epic("Обучение в практикуме", "Нужно пройти все спринты");
+        Epic epic1 = new Epic("Обучение в практикуме", "Нужно пройти все спринты", "NEW");
         manager.createEpic(epic1);
         Subtask subtask1 = new Subtask("Спринт 1", "Очень нравится", "DONE", 4);
         Subtask subtask2 = new Subtask("Спринт 2", "Задание было сложным", "IN_PROGRESS", 4);
@@ -24,6 +24,5 @@ public class Main {
         manager.createSubtask(subtask2);
         manager.createSubtask(subtask3);
         manager.createSubtask(subtask4);
-
     }
 }
