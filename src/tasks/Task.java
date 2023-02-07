@@ -1,17 +1,24 @@
 package tasks;
 
+import manager.TaskStatus;
+
 import java.util.Objects;
 
 public class Task {
     private String name;
     private String description;
-    private Integer id;
-    private String status;
+    private int id;
+    private TaskStatus status;
 
-    public Task(String name, String description, String status) {
+    public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public String getName() {
@@ -34,15 +41,15 @@ public class Task {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Integer newId) {
+        id = newId;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 

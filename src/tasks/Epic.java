@@ -1,18 +1,19 @@
 package tasks;
 
+import manager.TaskStatus;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
 
-    private ArrayList<Subtask> subtasks = new ArrayList();
-    //private ArrayList<Integer> subtasksId = new ArrayList();
+    private ArrayList<Integer> subtasksId = new ArrayList();
 
-    public Epic(String name, String description, String status) {
-        super(name, description, status);
+    public Epic(String name, String description) {
+        super(name, description);
     }
 
-    /*public ArrayList<Integer> getSubtasksId() {
+    public ArrayList<Integer> getSubtasksId() {
         return subtasksId;
     }
 
@@ -22,18 +23,6 @@ public class Epic extends Task {
 
     public void cleanSubtasksId() {
         subtasksId.clear();
-    }*/
-
-    public ArrayList<Subtask> getSubtasks() {
-        return subtasks;
-    }
-
-    public void setSubtasks(ArrayList<Subtask> subtasks) {
-        this.subtasks = subtasks;
-    }
-
-    public void cleanSubtasks() {
-        subtasks.clear();
     }
 
 
@@ -46,12 +35,12 @@ public class Epic extends Task {
                 && Objects.equals(getDescription(), epic.getDescription())
                 && Objects.equals(getId(), epic.getId())
                 && Objects.equals(getStatus(), epic.getStatus())
-                && Objects.equals(subtasks, epic.subtasks);
+                && Objects.equals(subtasksId, epic.subtasksId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDescription(), getId(), getStatus(), subtasks);
+        return Objects.hash(getName(), getDescription(), getId(), getStatus(), subtasksId);
     }
 
     @Override
@@ -61,7 +50,7 @@ public class Epic extends Task {
                 "description='" + getDescription().length() + "',\n" +
                 "id=" + getId() + "',\n" +
                 "status='" + getStatus() + "',\n" +
-                "subtasks=" + subtasks.size() + "'\n" +
+                "subtasks=" + subtasksId.size() + "'\n" +
                 '}';
     }
 }
