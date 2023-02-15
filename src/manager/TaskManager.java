@@ -5,44 +5,47 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
 
-    public ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    public ArrayList<Subtask> getSubtasks();
+    List<Subtask> getSubtasks();
 
-    public ArrayList<Epic> getEpics();
+    List<Epic> getEpics();
 
-    public void removeAllTasks();
+    void removeAllTasks();
 
-    public void removeAllSubtasks();
+    void removeAllSubtasks();
 
-    public void removeAllEpics();
+    void removeAllEpics();
 
-    public Task getTaskById(int id);
+    Task getTaskById(int id);
 
-    public Subtask getSubtaskById(int id);
+    Subtask getSubtaskById(int id);
 
-    public Epic getEpicById(int id);
+    Epic getEpicById(int id);
 
-    public int createTask(Task task);
+    int createTask(Task task);
 
-    public Integer createSubtask(Subtask subtask);
+    Integer createSubtask(Subtask subtask);
 
-    public int createEpic(Epic epic);
+    int createEpic(Epic epic);
 
-    public void updateTask(Task task);
+    void updateTask(Task task);
 
-    public void updateSubtask(Subtask subtask);
+    void updateSubtask(Subtask subtask);
 
-    public void updateEpic(Epic epic);
+    void updateEpic(Epic epic);
 
-    public void removeTask(int id);
+    void removeTask(int id);
 
-    public void removeSubtask(int id);
+    void removeSubtask(int id);
 
-    public void removeEpic(int id);
+    void removeEpic(int id);
 
-    public ArrayList<Subtask> getEpicSubtasks(int epicId);
+    List<Subtask> getEpicSubtasks(int epicId);
+
+    List<Task> getHistory();
 }

@@ -3,9 +3,11 @@ package manager;
 import tasks.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface HistoryManager {
-    public void add(Task task);
 
-    public ArrayList<Task> getHistory();
+    void add(Task task);
+
+    List<Task> getHistory();
 }

@@ -1,4 +1,5 @@
-import manager.InMemoryTaskManager;
+import manager.Managers;
+import manager.TaskManager;
 import tasks.TaskStatus;
 import tasks.Epic;
 import tasks.Subtask;
@@ -8,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        TaskManager taskManager = Managers.getDefault();
         Task task1 = new Task("Волейбол", "01.02.2023 в 12:00", TaskStatus.NEW);
         Task task2 = new Task("Valorant", "Выйграть турнир", TaskStatus.DONE);
         Task task3 = new Task("Ужин", "В пятницу на этой неделе", TaskStatus.IN_PROGRESS);
