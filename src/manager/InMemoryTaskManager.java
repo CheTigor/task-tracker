@@ -19,26 +19,23 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private int nextId = 1;
-    private final Map<Integer, Task> tasks = new HashMap();
-    private final Map<Integer, Subtask> subtasks = new HashMap();
-    private final Map<Integer, Epic> epics = new HashMap();
+    private final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Subtask> subtasks = new HashMap<>();
+    private final Map<Integer, Epic> epics = new HashMap<>();
 
     @Override
     public List<Task> getTasks() {
-        List<Task> taskArrayList = new ArrayList<>(tasks.values());
-        return taskArrayList;
+        return new ArrayList<>(tasks.values());
     }
 
     @Override
     public List<Subtask> getSubtasks() {
-        List<Subtask> subtaskArrayList = new ArrayList<>(subtasks.values());
-        return subtaskArrayList;
+        return new ArrayList<>(subtasks.values());
     }
 
     @Override
     public ArrayList<Epic> getEpics() {
-        ArrayList<Epic> epicArrayList = new ArrayList<>(epics.values());
-        return epicArrayList;
+        return new ArrayList<>(epics.values());
     }
 
     @Override
