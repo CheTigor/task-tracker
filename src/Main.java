@@ -32,7 +32,8 @@ public class Main {
         taskManager.getEpicById(4);
         taskManager.getSubtaskById(5);
         taskManager.getSubtaskById(6);
-        taskManager.removeTask(1);
+        taskManager.getSubtaskById(5);
+        taskManager.removeTask(4);
 //        taskManager.getSubtaskById(7);
 //        taskManager.getSubtaskById(8);
 //        taskManager.getEpicById(4);

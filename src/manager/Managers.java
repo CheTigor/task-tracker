@@ -6,6 +6,8 @@ public abstract class Managers {
 
     public static TaskManager inMemoryTaskManager;
 
+    //Такая реализация утилитарного класса сделана, чтобы при повторной вызове
+    //этой функции не создавался новый класс, а использовался уже существующий
     public static HistoryManager getDefaultHistory() {
         if (inMemoryHistoryManager == null) {
             inMemoryHistoryManager = new InMemoryHistoryManager();
