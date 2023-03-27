@@ -6,15 +6,15 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    //Можно я оставлю это поле, так как лучше всегда иметь ограничение в программе, чтобы оно не сломалось из-за переполнения.
-    //Ограничение может быть любым, просто с 5 легче проверить программу на корректную работу.
     private static final int MAX_HISTORY_SIZE = 5;
-    //private final TasksLinkedHashMap tasksLinkedHashMap = new TasksLinkedHashMap();
     private Node head;
     private Node tail;
     private int size = 0;
     private final Map<Integer, Node> history = new HashMap<>();
 
+    public Map<Integer, Node> getHistory() {
+        return history;
+    }
 
     @Override
     public void add(Task task) {
@@ -28,7 +28,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public List<Task> getHistory() {
+    public List<Task> getListOfHistory() {
         return getTasks();
     }
 
@@ -37,7 +37,17 @@ public class InMemoryHistoryManager implements HistoryManager {
         removeNode(id);
     }
 
-    public void linkLast(Task task) {
+    private List<Task> getTasks() {
+        List<Task> tasksHistory = new ArrayList<>();
+        Node node = head;
+        while (node != null) {
+            tasksHistory.add(node.data);
+            node = node.next;
+        }
+        return tasksHistory;
+    }
+
+    private void linkLast(Task task) {
         final Node newNode = new Node(task, tail, null);
         if (head == null) {
             head = newNode;
@@ -52,7 +62,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    public void removeNode(int id) {
+    private void removeNode(int id) {
         final Node node = history.remove(id);
         if (node == null) {
             return;
@@ -73,16 +83,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
         }
         size--;
-    }
-
-    public List<Task> getTasks() {
-        List<Task> tasksHistory = new ArrayList<>();
-        Node node = head;
-        while (node != null) {
-            tasksHistory.add(node.data);
-            node = node.next;
-        }
-        return tasksHistory;
     }
 
     private static class Node {

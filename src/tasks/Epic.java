@@ -12,6 +12,18 @@ public class Epic extends Task {
         super(name, description);
     }
 
+    public String getSubtasksIdtoString() {
+        StringBuilder idsString = new StringBuilder();
+        for (Integer id : subtasksId) {
+            idsString.append(id.toString());
+            idsString.append(".");
+        }
+        if (idsString.length() != 0) {
+            idsString.deleteCharAt(idsString.length() - 1);
+        }
+        return idsString.toString();
+    }
+
     public List<Integer> getSubtasksId() {
         return subtasksId;
     }
