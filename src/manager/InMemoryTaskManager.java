@@ -5,10 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
-import tasks.TaskStatus;
+import tasks.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -77,36 +74,34 @@ public class InMemoryTaskManager implements TaskManager {
         return subtasks.get(id);
     }
 
+    @Override
     public Epic getEpicById(int id) {
         historyManager.add(epics.get(id));
         return epics.get(id);
     }
 
     @Override
-    public void createTask(Task task) {
-        final int id = nextId++;
-        task.setId(id);
-        tasks.put(id, task);
+    public void createTask(String name, String description, TaskStatus status) {
+        Task task = new Task(nextId++, name, description, status, TaskType.TASK);
+        tasks.put(task.getId(), task);
     }
 
     @Override
-    public void createSubtask(Subtask subtask) {
+    public void createSubtask(String name, String description, TaskStatus status, int epicId) {
+        Subtask subtask = new Subtask(nextId++, name, description, status, TaskType.SUBTASK, epicId);
         final Epic epic = epics.get(subtask.getEpicId());
         if (epic == null) {
             return;
         }
-        final int id = nextId++;
-        subtask.setId(id);
         epics.get(subtask.getEpicId()).getSubtasksId().add(subtask.getId());
-        subtasks.put(id, subtask);
+        subtasks.put(subtask.getId(), subtask);
         checkEpicStatus(epics.get(subtask.getEpicId()));
     }
 
     @Override
-    public void createEpic(Epic epic) {
-        final int id = nextId++;
-        epic.setId(id);
-        epics.put(id, epic);
+    public void createEpic(String name, String description) {
+        Epic epic = new Epic(nextId++, name, description, TaskType.EPIC);
+        epics.put(epic.getId(), epic);
         checkEpicStatus(epic);
     }
 
@@ -213,5 +208,6 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStatus(TaskStatus.IN_PROGRESS);
         }
     }
+
 }
 

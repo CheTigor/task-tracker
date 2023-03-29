@@ -5,37 +5,20 @@ import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {
+    private final List<Integer> subtasksId = new ArrayList<>();
+    private final TaskType type = TaskType.EPIC;
 
-    private List<Integer> subtasksId = new ArrayList<>();
-
-    public Epic(String name, String description) {
-        super(name, description);
-    }
-
-    public String getSubtasksIdtoString() {
-        StringBuilder idsString = new StringBuilder();
-        for (Integer id : subtasksId) {
-            idsString.append(id.toString());
-            idsString.append(".");
-        }
-        if (idsString.length() != 0) {
-            idsString.deleteCharAt(idsString.length() - 1);
-        }
-        return idsString.toString();
+    public Epic(int id, String name, String description, TaskType type) {
+        super(id, name, description, type);
     }
 
     public List<Integer> getSubtasksId() {
         return subtasksId;
     }
 
-    public void setSubtasksId(List<Integer> subtasksId) {
-        this.subtasksId = subtasksId;
-    }
-
     public void cleanSubtasksId() {
         subtasksId.clear();
     }
-
 
     @Override
     public boolean equals(Object o) {

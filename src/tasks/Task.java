@@ -5,18 +5,34 @@ import java.util.Objects;
 public class Task {
     private String name;
     private String description;
-    private int id;
+    private final int id;
     private TaskStatus status;
+    private final TaskType type;
 
-    public Task(String name, String description, TaskStatus status) {
+    public Task(int id, String name, String description, TaskStatus status, TaskType type) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+        this.type = type;
     }
 
-    public Task(String name, String description) {
+    //Второй конструктор для класса Epic, так как он не должен сам назначать себе статус
+    public Task(int id, String name, String description, TaskType type) {
+        this.id = id;
         this.name = name;
         this.description = description;
+        this.type = type;
+    }
+
+    //Метод не нужен в данном кассе, но наследуется другими
+    public String getEpicIdToString() {
+        return null;
+    }
+
+    //Метод не нужен в данном кассе, но наследуется другими
+    public String getSubtasksIdtoString() {
+        return null;
     }
 
     public String getName() {
@@ -39,10 +55,6 @@ public class Task {
         return id;
     }
 
-    public void setId(Integer newId) {
-        id = newId;
-    }
-
     public TaskStatus getStatus() {
         return status;
     }
@@ -51,30 +63,33 @@ public class Task {
         this.status = status;
     }
 
+    public TaskType getType() {
+        return type;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(name, task.name)
-                && Objects.equals(description, task.description)
-                && Objects.equals(id, task.id)
-                && Objects.equals(status, task.status);
+        return Objects.equals(getName(), task.getName())
+                && Objects.equals(getDescription(), task.getDescription())
+                && Objects.equals(getId(), task.getId())
+                && Objects.equals(getStatus(), task.getStatus());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, id, status);
+        return Objects.hash(getName(), getDescription(), getId(), getStatus());
     }
 
     @Override
     public String toString() {
         return "Task{" + "\n" +
-                "name='" + name + "',\n" +
-                "description='" + description.length() + "',\n" +
-                "id='" + id + "',\n" +
-                "status='" + status + "'\n" +
+                "name='" + getName() + "',\n" +
+                "description='" + getDescription().length() + "',\n" +
+                "id='" + getId() + "',\n" +
+                "status='" + getStatus() + "'\n" +
                 '}';
     }
 }
