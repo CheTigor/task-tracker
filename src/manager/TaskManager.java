@@ -5,6 +5,7 @@ import tasks.Subtask;
 import tasks.Task;
 import tasks.TaskStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TaskManager {
@@ -27,9 +28,17 @@ public interface TaskManager {
 
     Epic getEpicById(int id);
 
-    void createTask(String name, String description, TaskStatus status);
+    void createTask(String name, String description, TaskStatus status,
+                        int duration);
 
-    void createSubtask(String name, String description, TaskStatus status, int epicId);
+    void createTask(String name, String description, TaskStatus status,
+                    int duration, LocalDateTime startTime);
+
+    void createSubtask(String name, String description, TaskStatus status,
+                       int duration, int epicId);
+
+    void createSubtask(String name, String description, TaskStatus status,
+                       int duration, LocalDateTime startTime, int epicId);
 
     void createEpic(String name, String description);
 
@@ -48,4 +57,6 @@ public interface TaskManager {
     List<Subtask> getEpicSubtasks(int epicId);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 }

@@ -1,12 +1,13 @@
 package tasks;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {
     private final List<Integer> subtasksId = new ArrayList<>();
-    private final TaskType type = TaskType.EPIC;
+    private LocalDateTime endTime;
 
     public Epic(int id, String name, String description, TaskType type) {
         super(id, name, description, type);
@@ -21,6 +22,15 @@ public class Epic extends Task {
     }
 
     @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -29,7 +39,10 @@ public class Epic extends Task {
                 && Objects.equals(getDescription(), epic.getDescription())
                 && Objects.equals(getId(), epic.getId())
                 && Objects.equals(getStatus(), epic.getStatus())
-                && Objects.equals(subtasksId, epic.subtasksId);
+                && Objects.equals(subtasksId, epic.subtasksId)
+                && Objects.equals(getType(), epic.getType())
+                && Objects.equals(getDuration(), epic.getDuration())
+                && Objects.equals(getStartTime(), epic.getStartTime());
     }
 
     @Override
@@ -41,9 +54,11 @@ public class Epic extends Task {
     public String toString() {
         return "Epic{" + "\n" +
                 "name='" + getName() + "',\n" +
-                "description='" + getDescription().length() + "',\n" +
+                "description='" + getDescription() + "',\n" +
                 "id=" + getId() + "',\n" +
                 "status='" + getStatus() + "',\n" +
+                "startTime='" + getStartTime().format(DATE_TIME_FORMATTER)+ "'\n" +
+                "duration='" + getDuration() + "'\n" +
                 "subtasks=" + subtasksId.size() + "'\n" +
                 '}';
     }

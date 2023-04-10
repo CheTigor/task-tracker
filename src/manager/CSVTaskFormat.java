@@ -2,13 +2,14 @@ package manager;
 
 import tasks.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CSVTaskFormat {
 
     public static String getHeader() {
-        return "id,type,name,status,description,epic";
+        return "id,type,name,status,description,duration,epic";
     }
 
     public static String toString(Task task) {
@@ -17,6 +18,8 @@ public class CSVTaskFormat {
                 + "," + task.getName()
                 + "," + task.getStatus()
                 + "," + task.getDescription()
+                + "," + (task.getStartTime() != null ? task.getStartTime().format(Task.DATE_TIME_FORMATTER) : "")
+                + "," + task.getDuration()
                 + "," + (task.getType().equals(TaskType.SUBTASK) ? task.getEpicIdToString() : "");
     }
 
@@ -51,13 +54,24 @@ public class CSVTaskFormat {
         final String name = values[2];
         final TaskStatus status = TaskStatus.valueOf(values[3]);
         final String description = values[4];
+        final long duration = Long.parseLong(values[6]);
         if (type == TaskType.TASK) {
-            return new Task(id, name, description, status, type);
+            Task task = new Task(id, name, description, status, type, duration);
+            task.setStartTime(LocalDateTime.parse(values[5],Task.DATE_TIME_FORMATTER));
+            return task;
         }
         if (type == TaskType.SUBTASK) {
-            final int epicId = Integer.parseInt(values[5]);
-            return new Subtask(id, name, description, status, type, epicId);
+            final int epicId = Integer.parseInt(values[7]);
+            Subtask subtask = new Subtask(id, name, description, status, type, duration, epicId);
+            subtask.setStartTime(LocalDateTime.parse(values[5],Task.DATE_TIME_FORMATTER));
+            return subtask;
         }
-        return new Epic(id, name, description, type);
+        Epic epic = new Epic(id, name, description, type);
+        if ((values[5].equals(""))) {
+            epic.setStartTime(null);
+        } else {
+            epic.setStartTime(LocalDateTime.parse(values[5], Task.DATE_TIME_FORMATTER));
+        }
+        return epic;
     }
 }

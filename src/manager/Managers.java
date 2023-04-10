@@ -2,7 +2,7 @@ package manager;
 
 import java.io.File;
 
-//C:\Users\chetv\dev\java-kanban\resources\task.cvs
+//C:/Users/chetv/dev/java-kanban/resources/task.cvs
 
 public abstract class Managers {
 
@@ -11,6 +11,6 @@ public abstract class Managers {
     }
 
     public static TaskManager getDefault() {
-        return new FileBackedTasksManager(new File("C:/Users/chetv/dev/java-kanban/resources/task.cvs"));
+        return new FileBackedTasksManager(new File("resources/task.cvs"));
     }
 }

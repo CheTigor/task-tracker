@@ -6,6 +6,7 @@ import tasks.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +71,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             for (Integer taskId : history) {
                 taskManager.historyManager.add(taskManager.findTask(taskId));
             }
-            taskManager.nextId = generatorId;
+            taskManager.nextId = generatorId + 1;
         } catch (IOException e) {
             throw new ManagerSaveException("Can't read form file: " + file.getName(), e);
         }
@@ -123,14 +124,27 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void createTask(String name, String description, TaskStatus status) {
-        super.createTask(name, description, status);
+    public void createTask(String name, String description, TaskStatus status, int duration) {
+        super.createTask(name, description, status, duration);
         save();
     }
 
     @Override
-    public void createSubtask(String name, String description, TaskStatus status, int epicId) {
-        super.createSubtask(name, description, status, epicId);
+    public void createTask(String name, String description, TaskStatus status, int duration, LocalDateTime startTime) {
+        super.createTask(name, description, status, duration, startTime);
+        save();
+    }
+
+    @Override
+    public void createSubtask(String name, String description, TaskStatus status, int duration, int epicId) {
+        super.createSubtask(name, description, status, duration, epicId);
+        save();
+    }
+
+    @Override
+    public void createSubtask(String name, String description, TaskStatus status,
+                              int duration, LocalDateTime startTime, int epicId) {
+        super.createSubtask(name, description, status, duration, startTime, epicId);
         save();
     }
 
