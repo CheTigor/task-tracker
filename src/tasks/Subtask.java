@@ -6,15 +6,10 @@ import java.util.Objects;
 public class Subtask extends Task {
     private final int epicId;
 
-    public Subtask(int id, String name, String description, TaskStatus status, TaskType type,
-                   long duration, int epicId) {
-        super(id, name, description, status, type, duration);
-        this.epicId = epicId;
-    }
-
-    public Subtask(int id, String name, String description, TaskStatus status, TaskType type,
-                   long duration, LocalDateTime startTime, int epicId) {
-        super(id, name, description, status, type, duration, startTime);
+    public Subtask(String name, String description, TaskStatus status,
+                   LocalDateTime startTime, long duration, int epicId) {
+        super(name, description, status, startTime, duration);
+        setType(TaskType.SUBTASK);
         this.epicId = epicId;
     }
 
@@ -55,7 +50,7 @@ public class Subtask extends Task {
                 "description='" + getDescription() + "',\n" +
                 "id='" + getId() + "',\n" +
                 "status='" + getStatus() + "',\n" +
-                "startTime='" + getStartTime().format(DATE_TIME_FORMATTER)+ "'\n" +
+                "startTime='" + getStartTime() + "'\n" +
                 "duration='" + getDuration() + "',\n" +
                 "epicId='" + epicId + "'\n" +
                 '}';

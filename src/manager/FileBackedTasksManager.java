@@ -6,7 +6,6 @@ import tasks.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -124,34 +123,35 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void createTask(String name, String description, TaskStatus status, int duration) {
-        super.createTask(name, description, status, duration);
+    public int createTask(Task task) {
+        task.setId(nextId++);
+        addSortedTask(task);
+        tasks.put(task.getId(), task);
         save();
+        return task.getId();
     }
 
     @Override
-    public void createTask(String name, String description, TaskStatus status, int duration, LocalDateTime startTime) {
-        super.createTask(name, description, status, duration, startTime);
+    public int createSubtask(Subtask subtask) {
+        final Epic epic = epics.get(subtask.getEpicId());
+        if (epic == null) {
+            return 0;
+        }
+        subtask.setId(nextId++);
+        addSortedTask(subtask);
+        epic.getSubtasksId().add(subtask.getId());
+        subtasks.put(subtask.getId(), subtask);
+        updateEpic(epic.getId());
         save();
+        return subtask.getId();
     }
 
     @Override
-    public void createSubtask(String name, String description, TaskStatus status, int duration, int epicId) {
-        super.createSubtask(name, description, status, duration, epicId);
+    public int createEpic(Epic epic) {
+        epic.setId(nextId++);
+        epics.put(epic.getId(), epic);
         save();
-    }
-
-    @Override
-    public void createSubtask(String name, String description, TaskStatus status,
-                              int duration, LocalDateTime startTime, int epicId) {
-        super.createSubtask(name, description, status, duration, startTime, epicId);
-        save();
-    }
-
-    @Override
-    public void createEpic(String name, String description) {
-        super.createEpic(name, description);
-        save();
+        return epic.getId();
     }
 
     @Override

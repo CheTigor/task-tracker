@@ -2,55 +2,35 @@ package tasks;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
     private String name;
     private String description;
-    private final int id;
+    private int id;
     private TaskStatus status;
-    private final TaskType type;
+    private TaskType type;
     private long duration;
     private LocalDateTime startTime;
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
-    public Task(int id, String name, String description, TaskStatus status, TaskType type, long duration) {
-        this.id = id;
+    //Конструктор для отложенной задачи
+    public Task(String name, String description, TaskStatus status, LocalDateTime startTime, long duration) {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.type = type;
-        if (duration <= 0) {
-            throw new IllegalArgumentException("duration can't be <= 0");
-        } else {
-            this.duration = duration;
-        }
-        startTime = LocalDateTime.now();
-    }
-
-    public Task(int id, String name, String description, TaskStatus status, TaskType type,
-                long duration, LocalDateTime startTime) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.type = type;
         if (duration <= 0) {
             throw new IllegalArgumentException("duration can't be <= 0");
         } else {
             this.duration = duration;
         }
         this.startTime = startTime;
+        this.type = TaskType.TASK;
     }
 
-    //Второй конструктор для класса Epic, так как он не должен сам назначать себе статус
-    public Task(int id, String name, String description, TaskType type) {
-        this.id = id;
+    //Третий конструктор для класса Epic, так как он не должен сам назначать себе статус
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.type = type;
-        this.status = TaskStatus.NEW;
     }
 
     //Метод не нужен в данном кассе, но наследуется другими
@@ -79,8 +59,12 @@ public class Task {
         this.description = description;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public TaskStatus getStatus() {
@@ -95,8 +79,16 @@ public class Task {
         return type;
     }
 
+    public void setType(TaskType type) {
+        this.type = type;
+    }
+
     public long getDuration() {
         return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     public LocalDateTime getStartTime() {
@@ -137,7 +129,7 @@ public class Task {
                 "description='" + getDescription().length() + "',\n" +
                 "id='" + getId() + "',\n" +
                 "status='" + getStatus() + "',\n" +
-                "startTime='" + getStartTime().format(DATE_TIME_FORMATTER)+ "'\n" +
+                "startTime='" + getStartTime()+ "'\n" +
                 "duration='" + getDuration() + "'\n" +
                 '}';
     }

@@ -3,9 +3,7 @@ package manager;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
-import tasks.TaskStatus;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TaskManager {
@@ -28,19 +26,11 @@ public interface TaskManager {
 
     Epic getEpicById(int id);
 
-    void createTask(String name, String description, TaskStatus status,
-                        int duration);
+    int createTask(Task task);
 
-    void createTask(String name, String description, TaskStatus status,
-                    int duration, LocalDateTime startTime);
+    int createSubtask(Subtask subtask);
 
-    void createSubtask(String name, String description, TaskStatus status,
-                       int duration, int epicId);
-
-    void createSubtask(String name, String description, TaskStatus status,
-                       int duration, LocalDateTime startTime, int epicId);
-
-    void createEpic(String name, String description);
+    int createEpic(Epic epic);
 
     void updateTask(Task task);
 

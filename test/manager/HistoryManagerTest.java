@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,12 +19,17 @@ abstract class HistoryManagerTest<T extends HistoryManager> {
 
     @BeforeEach
     void createTasks() {
-        task = new Task(1, "TestTask", "TaskDescription", TaskStatus.NEW, TaskType.TASK, 200);
-        epic = new Epic(2, "TestTask", "TaskDescription", TaskType.EPIC);
-        subtask1 = new Subtask(3, "TestTask", "TaskDescription",
-                TaskStatus.NEW,TaskType.SUBTASK, 200,  2);
-        subtask2 = new Subtask(4, "TestTask", "TaskDescription",
-                TaskStatus.NEW,TaskType.SUBTASK, 200, 2);
+        task = new Task("TestTask", "TaskDescription", TaskStatus.NEW,
+                LocalDateTime.of(2023, 1, 1, 0, 0, 0), 60);
+        task.setId(1);
+        epic = new Epic("TestTask", "TaskDescription");
+        epic.setId(2);
+        subtask1 = new Subtask("TestTask", "TaskDescription", TaskStatus.NEW,
+                LocalDateTime.of(2023, 1, 1, 1, 0, 0),  60, 2);
+        subtask1.setId(3);
+        subtask2 = new Subtask("TestTask", "TaskDescription", TaskStatus.NEW,
+                LocalDateTime.of(2023, 1, 1, 2, 0, 0), 60, 2);
+        subtask2.setId(4);
     }
 
     @Test
