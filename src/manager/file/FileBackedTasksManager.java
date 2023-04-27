@@ -1,6 +1,8 @@
-package manager;
+package manager.file;
 
 
+import manager.exceptions.ManagerSaveException;
+import manager.InMemoryTaskManager;
 import tasks.*;
 
 import java.io.*;
@@ -9,15 +11,19 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.net.URI;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private final Path path;
+    private Path path;
 
     public FileBackedTasksManager(File file) {
         this.path = file.toPath();
     }
 
-    private void save() {
+    public FileBackedTasksManager() {
+    }
+
+    protected void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path.toFile()))) {
             writer.write(CSVTaskFormat.getHeader());
             writer.newLine();
@@ -77,7 +83,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return taskManager;
     }
 
-    private void addAnyTask(Task task) {
+    protected void addAnyTask(Task task) {
         final int id = task.getId();
         switch (task.getType()) {
             case TASK:
@@ -105,6 +111,27 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
+    public List<Task> getTasks() {
+        List<Task> tasks = super.getTasks();
+        save();
+        return tasks;
+    }
+
+    @Override
+    public List<Subtask> getSubtasks() {
+        List<Subtask> subtasks = super.getSubtasks();
+        save();
+        return subtasks;
+    }
+
+    @Override
+    public List<Epic> getEpics() {
+        List<Epic> epics = super.getEpics();
+        save();
+        return epics;
+    }
+
+    @Override
     public void removeAllTasks() {
         super.removeAllTasks();
         save();
@@ -124,34 +151,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public int createTask(Task task) {
-        task.setId(nextId++);
-        addSortedTask(task);
-        tasks.put(task.getId(), task);
+        int id = super.createTask(task);
         save();
-        return task.getId();
+        return id;
     }
 
     @Override
-    public int createSubtask(Subtask subtask) {
-        final Epic epic = epics.get(subtask.getEpicId());
-        if (epic == null) {
-            return 0;
-        }
-        subtask.setId(nextId++);
-        addSortedTask(subtask);
-        epic.getSubtasksId().add(subtask.getId());
-        subtasks.put(subtask.getId(), subtask);
-        updateEpic(epic.getId());
+    public int createSubtask(Subtask task) {
+        int id = super.createSubtask(task);
         save();
-        return subtask.getId();
+        return id;
     }
 
     @Override
-    public int createEpic(Epic epic) {
-        epic.setId(nextId++);
-        epics.put(epic.getId(), epic);
+    public int createEpic(Epic task) {
+        int id = super.createEpic(task);
         save();
-        return epic.getId();
+        return id;
     }
 
     @Override

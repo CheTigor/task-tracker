@@ -126,7 +126,7 @@ public class Task {
     public String toString() {
         return "Task{" + "\n" +
                 "name='" + getName() + "',\n" +
-                "description='" + getDescription().length() + "',\n" +
+                "description='" + getDescription() + "',\n" +
                 "id='" + getId() + "',\n" +
                 "status='" + getStatus() + "',\n" +
                 "startTime='" + getStartTime()+ "'\n" +

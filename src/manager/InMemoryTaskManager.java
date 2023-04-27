@@ -3,6 +3,8 @@ package manager;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import manager.exceptions.OverlapsException;
+import manager.history.HistoryManager;
 import tasks.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -16,16 +18,25 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getTasks() {
+        for (Task task: tasks.values()) {
+            historyManager.add(task);
+        }
         return new ArrayList<>(tasks.values());
     }
 
     @Override
     public List<Subtask> getSubtasks() {
+        for (Task task: subtasks.values()) {
+            historyManager.add(task);
+        }
         return new ArrayList<>(subtasks.values());
     }
 
     @Override
-    public ArrayList<Epic> getEpics() {
+    public List<Epic> getEpics() {
+        for (Task task: epics.values()) {
+            historyManager.add(task);
+        }
         return new ArrayList<>(epics.values());
     }
 

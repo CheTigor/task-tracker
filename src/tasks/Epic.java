@@ -68,7 +68,7 @@ public class Epic extends Task {
         return "Epic{" + "\n" +
                 "name='" + getName() + "',\n" +
                 "description='" + getDescription() + "',\n" +
-                "id=" + getId() + "',\n" +
+                "id='" + getId() + "',\n" +
                 "status='" + getStatus() + "',\n" +
                 "startTime='" + getStartTime() + "'\n" +
                 "duration='" + getDuration() + "'\n" +
