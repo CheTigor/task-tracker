@@ -31,6 +31,7 @@ class HttpTaskServerTest {
     private HttpTaskServer httpTaskServer;
     private TaskManager taskManager;
     private final Gson gson = Managers.getGson();
+    private KVServer kvServer;
 
     private Task task;
     private Subtask subtask;
@@ -38,7 +39,7 @@ class HttpTaskServerTest {
 
     @BeforeEach
     void init() throws IOException {
-        KVServer kvServer = new KVServer();
+        kvServer = new KVServer();
         kvServer.start();
         taskManager = Managers.getDefault();
         httpTaskServer = new HttpTaskServer(taskManager);
@@ -52,6 +53,7 @@ class HttpTaskServerTest {
 
     @AfterEach
     void tearDown() {
+        kvServer.stop();
         httpTaskServer.stop();
     }
 
@@ -293,10 +295,11 @@ class HttpTaskServerTest {
         URI uri = URI.create("http://localhost:8080/tasks/subtask?id=2");
         HttpRequest request = HttpRequest.newBuilder().uri(uri).DELETE().build();
         taskManager.createEpic(epic);
+        taskManager.createSubtask(subtask);
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
 
-        Type taskType = new TypeToken<Epic>() {}.getType();
+        Type taskType = new TypeToken<Subtask>() {}.getType();
         Subtask actual = gson.fromJson(response.body(), taskType);
 
         assertNull(actual, "Метод DELETE для удаления подзадачи не сработал");
