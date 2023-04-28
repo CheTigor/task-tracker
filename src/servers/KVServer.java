@@ -40,17 +40,20 @@ public class KVServer {
             if ("GET".equals(h.getRequestMethod())) {
                 String key = h.getRequestURI().getPath().substring("/load/".length());
                 if (key.isEmpty()) {
-                    System.out.println("Key не найден");
+                    System.out.println("Key для сохранения пустой.");
+                    h.sendResponseHeaders(400, 0);
+                    return;
+                }
+                if (!data.containsKey(key)) {
+                    System.out.println("Не могу достать данные для ключа: " + key + ", данные отсутствуют");
                     h.sendResponseHeaders(404, 0);
                     return;
                 }
-                String value = data.get(key);
-                if (value == null) {
-                    System.out.println("По данному ключу ничего не нашлось");
-                    h.sendResponseHeaders(404, 0);
-                    return;
-                }
-                sendText(h, value);
+                sendText(h, data.get(key));
+                System.out.println("Значение для ключа " + key + " успешно отправлено в ответ на запрос!");
+            } else {
+                System.out.println("/load ждет GET-запрос, а получил: " + h.getRequestMethod());
+                h.sendResponseHeaders(405, 0);
             }
         } finally {
             h.close();
@@ -73,11 +76,15 @@ public class KVServer {
                     return;
                 }
                 String value = readText(h);
-                if (value.isEmpty()) {
+
+                //Убрал это условие, так как можно удалить все задачи и тогда не
+                // получился сохранить пустой файл под ключ
+                /*if (value.isEmpty()) {
                     System.out.println("Value для сохранения пустой. value указывается в теле запроса");
                     h.sendResponseHeaders(400, 0);
                     return;
-                }
+                }*/
+
                 data.put(key, value);
                 System.out.println("Значение для ключа " + key + " успешно обновлено!");
                 h.sendResponseHeaders(200, 0);

@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.net.URI;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private Path path;
@@ -108,27 +107,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             return subtask;
         }
         return epics.get(id);
-    }
-
-    @Override
-    public List<Task> getTasks() {
-        List<Task> tasks = super.getTasks();
-        save();
-        return tasks;
-    }
-
-    @Override
-    public List<Subtask> getSubtasks() {
-        List<Subtask> subtasks = super.getSubtasks();
-        save();
-        return subtasks;
-    }
-
-    @Override
-    public List<Epic> getEpics() {
-        List<Epic> epics = super.getEpics();
-        save();
-        return epics;
     }
 
     @Override

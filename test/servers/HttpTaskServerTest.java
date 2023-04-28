@@ -181,6 +181,7 @@ class HttpTaskServerTest {
     void addOrUpdateTask() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         URI uri = URI.create("http://localhost:8080/tasks/task");
+        task.setId(1);
         byte[] data = gson.toJson(task).getBytes();
         InputStream is = new ByteArrayInputStream(data);
         HttpRequest request = HttpRequest.newBuilder()
@@ -191,7 +192,6 @@ class HttpTaskServerTest {
 
         assertEquals(200, response.statusCode());
 
-        task.setId(1);
         Task task1 = taskManager.getTaskById(1);
 
         assertEquals(task, task1, "Задачи не совпадают");
@@ -214,6 +214,7 @@ class HttpTaskServerTest {
         HttpClient client = HttpClient.newHttpClient();
         URI uri = URI.create("http://localhost:8080/tasks/subtask");
         taskManager.createEpic(epic);
+        subtask.setId(2);
         byte[] data = gson.toJson(subtask).getBytes();
         InputStream is = new ByteArrayInputStream(data);
         HttpRequest request = HttpRequest.newBuilder()
@@ -224,7 +225,6 @@ class HttpTaskServerTest {
 
         assertEquals(200, response.statusCode());
 
-        subtask.setId(2);
         Subtask subtask1 = taskManager.getSubtaskById(2);
 
         assertEquals(subtask, subtask1, "Задачи не совпадают");
@@ -246,6 +246,7 @@ class HttpTaskServerTest {
     void addOrUpdateEpic() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         URI uri = URI.create("http://localhost:8080/tasks/epic");
+        epic.setId(1);
         byte[] data = gson.toJson(epic).getBytes();
         InputStream is = new ByteArrayInputStream(data);
         HttpRequest request = HttpRequest.newBuilder()
@@ -256,12 +257,11 @@ class HttpTaskServerTest {
 
         assertEquals(200, response.statusCode());
 
-        epic.setId(1);
         Epic epic1 = taskManager.getEpicById(1);
 
         assertEquals(epic, epic1, "Задачи не совпадают");
 
-        byte[] data2 = gson.toJson(epic).getBytes();
+        byte[] data2 = gson.toJson(epic1).getBytes();
         InputStream is2 = new ByteArrayInputStream(data2);
         HttpRequest request2 = HttpRequest.newBuilder()
                 .uri(uri)

@@ -1,5 +1,7 @@
 package servers;
 
+import manager.exceptions.ManagerSaveException;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,25 +22,23 @@ public class KVTaskClient {
         uriRegister = URI.create(uri + "/register/");
         uriLoad = URI.create(uri + "/load/");
         uriSave = URI.create(uri + "/save/");
-        apiToken = getToken();
+        apiToken = register();
     }
 
-    public String getToken() {
+    public String register() {
         final HttpRequest request = HttpRequest.newBuilder()
                 .uri(uriRegister)
                 .GET()
                 .build();
-        String value = "";
         try {
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                value = response.body();
+            if (response.statusCode() != 200) {
+                throw new ManagerSaveException("Can't do register request, status code: " + response.statusCode());
             }
+            return response.body();
         } catch (IOException | InterruptedException | NullPointerException e) {
-            System.out.println("Во время выполнения запроса возникла ошибка.\n" +
-                "Проверьте адрес и повторите попытку");
+            throw new ManagerSaveException("Error during registration");
         }
-        return value;
     }
 
     public void put(String key, String json) {
@@ -50,14 +50,13 @@ public class KVTaskClient {
                 .POST(HttpRequest.BodyPublishers.ofInputStream (() -> is))
                 .build();
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                System.out.println("Менеджер успешно сохранен");
-            } else {
-                System.out.println("Менеджер не удалось сохранить, код ответа: " + response.statusCode());
+            HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
+            if (response.statusCode() != 200) {
+                throw new ManagerSaveException("Can't do save request, status code: " + response.statusCode());
             }
-        } catch (Exception e) {
-            System.out.println("При сохранении менеджера возникла ошибка");
+            System.out.println("Менеджер успешно сохранен!");
+        } catch (IOException | InterruptedException e) {
+            throw new ManagerSaveException("Can't do save request", e);
         }
     }
 
@@ -69,10 +68,12 @@ public class KVTaskClient {
                 .build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                throw new ManagerSaveException("Can't do load request, status code: " + response.statusCode());
+            }
             return response.body();
         } catch (IOException | InterruptedException e) {
-            System.out.println("При сохранении менеджера возникла ошибка");
-            return "";
+            throw new ManagerSaveException("Can't do load request", e);
         }
     }
 }

@@ -231,11 +231,21 @@ public class HttpTaskServer {
             String value = readText(h);
             Type taskType = new TypeToken<Task>() {}.getType();
             Task task = gson.fromJson(value, taskType);
-            if (taskManager.getTaskById(task.getId()) != null) {
-                taskManager.updateTask(task);
-            } else {
+            if (taskManager.getTasks() == null) {
                 taskManager.createTask(task);
+                System.out.println("Задача успешно создана");
+                h.sendResponseHeaders(200, 0);
+                return;
             }
+            for (Task regTask : taskManager.getTasks()) {
+                if (regTask.getId() == task.getId()) {
+                    taskManager.updateTask(task);
+                    System.out.println("Задача успешно обновлена");
+                    h.sendResponseHeaders(200, 0);
+                    return;
+                }
+            }
+            taskManager.createTask(task);
             System.out.println("Задача успешно создана");
             h.sendResponseHeaders(200, 0);
         } catch (NullPointerException e) {
@@ -248,13 +258,23 @@ public class HttpTaskServer {
         try {
             String value = readText(h);
             Type taskType = new TypeToken<Subtask>() {}.getType();
-            Subtask subtask = gson.fromJson(value, taskType);
-            if (taskManager.getSubtaskById(subtask.getId()) != null) {
-                taskManager.updateSubtask(subtask);
-            } else {
-                taskManager.createSubtask(subtask);
+            Subtask task = gson.fromJson(value, taskType);
+            if (taskManager.getSubtasks() == null) {
+                taskManager.createSubtask(task);
+                System.out.println("Задача успешно создана");
+                h.sendResponseHeaders(200, 0);
+                return;
             }
-            System.out.println("Подзадача успешно создана");
+            for (Subtask subtask : taskManager.getSubtasks()) {
+                if (subtask.getId() == task.getId()) {
+                    taskManager.updateSubtask(task);
+                    System.out.println("Задача успешно обновлена");
+                    h.sendResponseHeaders(200, 0);
+                    return;
+                }
+            }
+            taskManager.createSubtask(task);
+            System.out.println("Задача успешно создана");
             h.sendResponseHeaders(200, 0);
         } catch (NullPointerException e) {
             System.out.println("Ошибка при создании подзадачи");
@@ -266,16 +286,26 @@ public class HttpTaskServer {
         try {
             String value = readText(h);
             Type taskType = new TypeToken<Epic>() {}.getType();
-            Epic epic = gson.fromJson(value, taskType);
-            if (taskManager.getEpicById(epic.getId()) != null) {
-                taskManager.updateEpic(epic);
-            } else {
-                taskManager.createEpic(epic);
+            Epic task = gson.fromJson(value, taskType);
+            if (taskManager.getEpics() == null) {
+                taskManager.createEpic(task);
+                System.out.println("Задача успешно создана");
+                h.sendResponseHeaders(200, 0);
+                return;
             }
-            System.out.println("Эпик успешно создан");
+            for (Epic epic : taskManager.getEpics()) {
+                if (epic.getId() == task.getId()) {
+                    taskManager.updateEpic(task);
+                    System.out.println("Задача успешно обновлена");
+                    h.sendResponseHeaders(200, 0);
+                    return;
+                }
+            }
+            taskManager.createEpic(task);
+            System.out.println("Задача успешно создана");
             h.sendResponseHeaders(200, 0);
         } catch (NullPointerException e) {
-            System.out.println("Ошибка при создании эпика");
+            System.out.println("Ошибка при создании задачи");
             h.sendResponseHeaders(405, 0);
         }
     }
